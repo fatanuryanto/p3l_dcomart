@@ -1,72 +1,102 @@
-import React, { useState } from 'react';
-import Dimsum from "../assets/Dimsum.jpg";
-import Gethuk from "../assets/Gethuk.jpg";
+import React, {  useEffect, useState } from 'react';
+import { Link } from "react-router-dom";
 
-const ProductItem = ({ name, price, image, quantity, onIncrease, onDecrease, selected, onSelect }) => {
+const ProductItem = ({ id, name, price, desc, handleAddToCart }) => {
+  const [buttonText, setButtonText] = useState('+ Tambah ke Keranjang');
+
+  const handleButtonClick = () => {
+    const storage = window.localStorage;
+    const orders = JSON.parse(storage.getItem('orders')) || [];
+    if (buttonText === '+ Tambah ke Keranjang') {
+      storage.setItem('orders', JSON.stringify([...orders, { id, name, price, desc }]));
+      setButtonText('- Hapus dari Keranjang');
+    } else {
+      const updatedOrders = orders.filter(order => order.id !== id);
+      storage.setItem('orders', JSON.stringify(updatedOrders));
+      setButtonText('+ Tambah ke Keranjang');
+    }
+  };
+
   return (
-    <div className="flex items-center justify-between p-4 bg-white shadow-md rounded-md">
-      <input
-        type="checkbox"
-        checked={selected}
-        onChange={onSelect}
-        className="checkbox"
-      />
-      <div className="flex items-center space-x-4">
-        <img src={image} alt={name} className="w-16 h-16 rounded-md object-cover" />
-        <div>
-          <h3 className="font-bold text-blue-950">{name}</h3>
-          <p className="font-semibold text-sm text-green-400">Rp {price.toLocaleString()}</p>
-        </div>
+    <div className="card bg-base-100 w-96 shadow-xl">
+      <div className="card-body">
+        <h2 className="card-title">{name}</h2>
+        <p>{desc}</p>
+        <p>Rp {price}</p>
       </div>
-      <div className="flex items-center space-x-2">
-        <button onClick={onDecrease} className="btn btn-outline btn-sm">
-          -
-        </button>
-        <span>{quantity}</span>
-        <button onClick={onIncrease} className="btn btn-outline btn-sm">
-          +
-        </button>
+      <figure>
+        <img
+          src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
+          alt={name}
+        />
+      </figure>
+      <div className="card-actions justify-center">
+        <div className="btn-group">
+          {/* Call handleButtonClick function directly */}
+          <button className="btn" onClick={handleButtonClick}>
+            {buttonText}
+          </button>
+        </div>
       </div>
     </div>
   );
 };
 
+
 const App = () => {
-  const [products, setProducts] = useState([
-    { id: 1, name: 'Dimsum Ayam', price: 18000, image: Dimsum, quantity: 2, selected: true },
-    { id: 2, name: 'Getuk Lindri Manis', price: 15000, image: Gethuk, quantity: 1, selected: false },
-  ]);
+  const [products, setProducts] = useState([]);
+  const [orders, setOrders] = useState([]);
 
-  const handleQuantityChange = (id, delta) => {
-    setProducts(products.map(product =>
-      product.id === id
-        ? { ...product, quantity: Math.max(1, product.quantity + delta) }
-        : product
-    ));
+  useEffect(() => {
+    fetch('http://localhost:8080/item')
+      .then(response => response.json())
+      .then(data =>
+        setProducts(
+          data.map(product => ({
+            ...product,
+            selected: false,
+            quantity: 1,
+          }))
+        )
+      )
+      .catch(error => console.error('Error fetching data:', error));
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('orders', JSON.stringify(orders));
+  }, [orders]);
+  
+
+  const handleAddToCart = (product) => {
+    setOrders([...orders, product]);
+    const isOrderExist = orders.some(order => order.id === product.id);
+    return (
+      <button className="btn" onClick={() => handleAddToCart(product)}>
+        {isOrderExist ? '- Hapus dari keranjang' : '+ Tambah Ke keranjang'}
+      </button>
+    );
   };
 
-  const handleSelect = (id) => {
-    setProducts(products.map(product =>
-      product.id === id ? { ...product, selected: !product.selected } : product
-    ));
+  const handleSelectAll = () => {
+    const allSelected = products.every(product => product.selected);
+    setProducts(products.map(product => ({
+      ...product,
+      selected: !allSelected,
+    })));
   };
-
-  const totalPrice = products
-    .filter(product => product.selected)
-    .reduce((sum, product) => sum + product.price * product.quantity, 0);
-
-  const totalItems = products.filter(product => product.selected).length;
 
   return (
     <div className="min-h-screen bg-blue-50 p-4">
       <div className="space-y-4">
         {products.map(product => (
           <ProductItem
-            key={product.id}
-            {...product}
-            onIncrease={() => handleQuantityChange(product.id, 1)}
-            onDecrease={() => handleQuantityChange(product.id, -1)}
-            onSelect={() => handleSelect(product.id)}
+            key={product.ID}
+            id={product.ID}
+            name={product.Name}
+            price={product.Price}
+            desc={product.Desc}
+            product={product}  // Pass the entire product object
+            handleAddToCart={handleAddToCart} // Pass the handleAddToCart function
           />
         ))}
       </div>
@@ -77,15 +107,14 @@ const App = () => {
               type="checkbox"
               className="checkbox"
               checked={products.every(product => product.selected)}
-              onChange={() => setProducts(products.map(product => ({ ...product, selected: !products.every(p => p.selected) })))}
+              onChange={handleSelectAll}
             />
             <span>Pilih Semua</span>
           </label>
           <div>
-            <p>Total Produk: {totalItems}</p>
-            <p>Total Bayar: Rp {totalPrice.toLocaleString()}</p>
+            {/* Display total items or other stats here */}
           </div>
-          <button className="btn btn-primary">Beli</button>
+          <Link to="/order"><button className="btn btn-primary">Beli</button></Link>
         </div>
       </div>
     </div>

@@ -1,7 +1,7 @@
 import React from "react";
 import WelcomeImage from "../assets/Welcome.png";
-import Dollars from "../assets/Dollars.png";
-import Voucher from "../assets/Voucher.png";
+// import Dollars from "../assets/Dollars.png";
+// import Voucher from "../assets/Voucher.png";
 import Nasgor from "../assets/nasi-goreng.png";
 import Minyak from "../assets/minyak.png";
 import Minuman from "../assets/Minuman.png";
@@ -26,18 +26,19 @@ const Homepage = () => {
         </div>
 
         {/* Order */}
-        <button className="w-full sm:w-104 text-center py-2 px-6 bg-white text-blue-950 font-bold rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300">
-          <div className="flex items-center justify-center">
-            <img
-              src="https://cdn-icons-png.flaticon.com/128/3514/3514491.png"
-              alt="dollars"
-              className="w-8 h-8 mr-2"
-            />
-          </div>
-          <Link to="/cart">
+        <Link to="/cart">
+          <button className="w-full sm:w-104 text-center py-2 px-6 bg-white text-blue-950 font-bold rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300">
+            <div className="flex items-center justify-center">
+              <img
+                src="https://cdn-icons-png.flaticon.com/128/3514/3514491.png"
+                alt="dollars"
+                className="w-8 h-8 mr-2"
+              />
+            </div>
+
             <p>Order Now</p>
-          </Link>
-        </button>
+          </button>
+        </Link>
 
         {/* Points and Vouchers */}
         {/* <div className="flex flex-wrap justify-between p-4 bg-gray-100">

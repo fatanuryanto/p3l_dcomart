@@ -1,4 +1,5 @@
 import {useState, useEffect} from 'react';
+import { Link } from "react-router-dom";
 
 
 function Navbar() {
@@ -6,36 +7,21 @@ function Navbar() {
   useEffect(() => {
     const storage = window.localStorage;
     const orders = JSON.parse(storage.getItem('orders')) || [];
-    console.log(orders);
     setOrder(orders);
-  })
+  }, [])
   return (
     <div className="navbar bg-base-100">
       <div className="navbar-start">
-        <a className="btn btn-ghost text-xl">daisyUI</a>
+        <Link to="/"><a className="btn btn-ghost text-xl">Dco Mart</a></Link>
       </div>
       <div className="navbar-center hidden lg:flex">
-        <ul className="menu menu-horizontal px-1">
-          <li>
-            <a>Item 1</a>
-          </li>
-          <li>
-            <details>
-              <summary>Parent</summary>
-              <ul className="p-2">
-                <li>
-                  <a>Submenu 1</a>
-                </li>
-                <li>
-                  <a>Submenu 2</a>
-                </li>
-              </ul>
-            </details>
-          </li>
-          <li>
-            <a>Item 3</a>
-          </li>
-        </ul>
+        <div className="flex items-center w-full sm:w-auto">
+          <input
+            type="text"
+            placeholder="Mau cari apa?"
+            className="input input-bordered input-sm flex-1 sm:max-w-xs"
+          />
+        </div>
       </div>
 
       <div className="navbar-end">

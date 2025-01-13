@@ -1,36 +1,20 @@
-import React from 'react';
-
+import React from "react";
 
 function Navbar() {
   return (
-    <div className="navbar bg-base-100">
+    <div className="navbar bg-yellow-400">
       <div className="navbar-start">
-        <a className="btn btn-ghost text-xl">daisyUI</a>
+        <a className="btn btn-ghost text-xl">D'co Mart</a>
       </div>
       <div className="navbar-center hidden lg:flex">
-        <ul className="menu menu-horizontal px-1">
-          <li>
-            <a>Item 1</a>
-          </li>
-          <li>
-            <details>
-              <summary>Parent</summary>
-              <ul className="p-2">
-                <li>
-                  <a>Submenu 1</a>
-                </li>
-                <li>
-                  <a>Submenu 2</a>
-                </li>
-              </ul>
-            </details>
-          </li>
-          <li>
-            <a>Item 3</a>
-          </li>
-        </ul>
+        <div className="flex items-center w-full sm:w-auto">
+          <input
+            type="text"
+            placeholder="Mau cari apa?"
+            className="input input-bordered input-sm flex-1 sm:max-w-xs"
+          />
+        </div>
       </div>
-
       <div className="navbar-end">
         <div className="dropdown dropdown-end">
           <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
@@ -65,7 +49,6 @@ function Navbar() {
             </div>
           </div>
         </div>
-        <a className="btn">Button</a>
       </div>
     </div>
   );

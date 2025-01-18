@@ -1,36 +1,46 @@
-import {useState, useEffect} from 'react';
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-
+import logo from "../assets/DcoMartLogo.png";
 
 function Navbar() {
-  const [orders, setOrder] = useState([]);
+  const [orders, setOrders] = useState([]);
+
   useEffect(() => {
     const storage = window.localStorage;
-    const orders = JSON.parse(storage.getItem('orders')) || [];
-    setOrder(orders);
-  }, [])
+    const savedOrders = JSON.parse(storage.getItem("orders")) || [];
+    setOrders(savedOrders);
+  }, []);
+
   return (
-    <div className="navbar bg-base-100">
+    <div className="navbar bg-yellow-400 px-4 lg:px-10">
+      {/* Logo */}
       <div className="navbar-start">
-        <Link to="/"><a className="btn btn-ghost text-xl">Dco Mart</a></Link>
+        <Link to="/" className="text-2xl font-bold text-green-900">
+          <span className="flex items-center">
+            <img src={logo} alt="Logo" className="w-10 h-15 mr-2" />
+            Dco Mart
+          </span>
+        </Link>
       </div>
-      <div className="navbar-center hidden lg:flex">
-        <div className="flex items-center w-full sm:w-auto">
+
+      <div className="flex-none gap-2">
+        <div className="form-control">
           <input
             type="text"
             placeholder="Mau cari apa?"
-            className="input input-bordered input-sm flex-1 sm:max-w-xs"
+            className="input input-bordered w-24 sm:w-32 md:w-48 lg:w-auto"
           />
         </div>
       </div>
 
+      {/* Cart Icon */}
       <div className="navbar-end">
         <div className="dropdown dropdown-end">
           <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
             <div className="indicator">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
+                className="h-6 w-6 text-green-900"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -49,20 +59,24 @@ function Navbar() {
           </div>
           <div
             tabIndex={0}
-            className="card card-compact dropdown-content bg-base-100 z-[1] mt-3 w-52 shadow"
+            className="card card-compact dropdown-content bg-white z-[1] mt-3 w-52 shadow"
           >
             <div className="card-body">
-              <span className="text-lg font-bold">{orders.length}  Items</span>
+              <span className="text-lg font-bold">{orders.length} Items</span>
               <span className="text-info">
-                Subtotal: ${orders.reduce((total, order) => total + order.price, 0)}
+                Subtotal: Rp
+                {orders
+                  .reduce((total, order) => total + order.price, 0)
+                  .toLocaleString()}
               </span>
               <div className="card-actions">
-                <button className="btn btn-primary btn-block">View cart</button>
+                <Link to="/cart" className="btn btn-primary btn-block">
+                  View cart
+                </Link>
               </div>
             </div>
           </div>
         </div>
-        <a className="btn">Button</a>
       </div>
     </div>
   );

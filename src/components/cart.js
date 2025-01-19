@@ -1,5 +1,5 @@
-import React, {  useEffect, useState } from 'react';
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import { Link, useNavigate } from "react-router-dom";
 
 const ProductItem = ({ id, name, price, desc, handleAddToCart }) => {
   const [buttonText, setButtonText] = useState('+ Tambah ke Keranjang');
@@ -32,7 +32,6 @@ const ProductItem = ({ id, name, price, desc, handleAddToCart }) => {
       </figure>
       <div className="card-actions justify-center">
         <div className="btn-group">
-          {/* Call handleButtonClick function directly */}
           <button className="btn" onClick={handleButtonClick}>
             {buttonText}
           </button>
@@ -42,10 +41,9 @@ const ProductItem = ({ id, name, price, desc, handleAddToCart }) => {
   );
 };
 
-
 const App = () => {
   const [products, setProducts] = useState([]);
-  const [orders, setOrders] = useState([]);
+  const navigate = useNavigate(); // Tambahkan useNavigate
 
   useEffect(() => {
     fetch('http://localhost:8080/item')
@@ -62,27 +60,8 @@ const App = () => {
       .catch(error => console.error('Error fetching data:', error));
   }, []);
 
-  useEffect(() => {
-    localStorage.setItem('orders', JSON.stringify(orders));
-  }, [orders]);
-  
-
-  const handleAddToCart = (product) => {
-    setOrders([...orders, product]);
-    const isOrderExist = orders.some(order => order.id === product.id);
-    return (
-      <button className="btn" onClick={() => handleAddToCart(product)}>
-        {isOrderExist ? '- Hapus dari keranjang' : '+ Tambah Ke keranjang'}
-      </button>
-    );
-  };
-
-  const handleSelectAll = () => {
-    const allSelected = products.every(product => product.selected);
-    setProducts(products.map(product => ({
-      ...product,
-      selected: !allSelected,
-    })));
+  const handleBuy = () => {
+    navigate('/summary'); // Navigasi ke halaman Summary
   };
 
   return (
@@ -95,8 +74,6 @@ const App = () => {
             name={product.Name}
             price={product.Price}
             desc={product.Desc}
-            product={product}  // Pass the entire product object
-            handleAddToCart={handleAddToCart} // Pass the handleAddToCart function
           />
         ))}
       </div>
@@ -107,14 +84,19 @@ const App = () => {
               type="checkbox"
               className="checkbox"
               checked={products.every(product => product.selected)}
-              onChange={handleSelectAll}
+              onChange={() => {
+                const allSelected = products.every(product => product.selected);
+                setProducts(products.map(product => ({
+                  ...product,
+                  selected: !allSelected,
+                })));
+              }}
             />
             <span>Pilih Semua</span>
           </label>
-          <div>
-            {/* Display total items or other stats here */}
-          </div>
-          <Link to="/order"><button className="btn btn-primary">Beli</button></Link>
+          <button className="btn btn-primary" onClick={handleBuy}>
+            Beli
+          </button>
         </div>
       </div>
     </div>

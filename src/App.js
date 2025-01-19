@@ -6,6 +6,7 @@ import Homepage from "./components/homepage";
 import Cart from "./components/cart";
 import Summary from "./components/summary";
 import OrderReview from "./components/orderReview";
+import LoginPage from "./components/loginPage"; // Tambahkan ini
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route path="/cart" element={<Cart />} />
         <Route path="/summary" element={<Summary />} />
         <Route path="/order-review" element={<OrderReview />} />
+        <Route path="/login" element={<LoginPage />} /> {/* Tambahkan ini */}
       </Routes>
       <Footer />
     </BrowserRouter>

@@ -20,9 +20,15 @@ const Summary = () => {
       navigate('/order-review', { state: { cartItems, userInfo, total: calculateTotal() } });
     }, 5000);
   };
+  
+  const handleClosePopup = () => {
+    setShowPopup(false);
+    navigate('/order-review', { state: { cartItems, userInfo, total: calculateTotal() } });
+  };
 
   const closePopup = () => {
     setShowPopup(false);
+    navigate('/order-review', { state: { cartItems, userInfo, total: calculateTotal() } });
   };
 
   return (
@@ -68,7 +74,7 @@ const Summary = () => {
               Terimakasih sudah berbelanja, {userInfo.name}! Dimohon untuk menunjukkan bukti pesanan ketika mengambil barang pesanan.
             </p>
             <button
-              onClick={closePopup}
+              onClick={handleClosePopup} // Change to handleClosePopup to navigate on close
               className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded"
             >
               Close

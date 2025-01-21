@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const LoginPage = () => {
-  const [credentials, setCredentials] = useState({ emailOrUsername: '', password: '' });
+  const [credentials, setCredentials] = useState({ email: '', password: '' });
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -10,11 +10,31 @@ const LoginPage = () => {
     setCredentials({ ...credentials, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Logging in with credentials:', credentials);
-    // Simulate login success
-    navigate('/');
+    const apiUrl = process.env.REACT_APP_BACKEND_API;
+    console.log(apiUrl);
+    
+    try {
+      const response = await fetch(`${apiUrl}/user/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(credentials), // Convert credentials to JSON
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        localStorage.setItem('token', data.token);
+         navigate('/');
+      } else {
+        console.error('Login failed:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error occurred:', error);
+    }
+   
   };
 
   return (
@@ -31,9 +51,9 @@ const LoginPage = () => {
             </label>
             <input
               type="text"
-              id="emailOrUsername"
-              name="emailOrUsername"
-              value={credentials.emailOrUsername}
+              id="email"
+              name="email"
+              value={credentials.email}
               onChange={handleChange}
               className="input input-bordered w-full border-green-400 focus:ring focus:ring-green-200"
               placeholder="Enter your email or username"

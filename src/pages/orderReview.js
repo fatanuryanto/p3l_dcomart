@@ -2,8 +2,8 @@ import React from 'react';
 import { useLocation } from 'react-router-dom';
 
 const OrderReview = () => {
-  const location = useLocation();
-  const { cartItems, userInfo, total } = location.state || {};
+  const cartItems = JSON.parse(localStorage.getItem('orders')) || [];
+  const total = cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-green-100 to-yellow-100 p-6 flex flex-col items-center">

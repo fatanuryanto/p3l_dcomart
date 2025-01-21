@@ -1,10 +1,19 @@
-import React from 'react';
-import { useLocation } from 'react-router-dom';
+import { useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const OrderReview = () => {
-  const cartItems = JSON.parse(localStorage.getItem('orders')) || [];
-  const total = cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
+  const location = useLocation();
+  const navigate = useNavigate();
 
+  // Ensure the state is available, otherwise redirect back to home
+  useEffect(() => {
+    if (!location.state) {
+      navigate("/"); // Redirect to home or another page if state is missing
+    }
+  }, [location.state, navigate]);
+
+  // Destructure state safely
+  const { cartItems = [], total = 0, orderId = "" } = location.state || {};
   return (
     <div className="min-h-screen bg-gradient-to-b from-green-100 to-yellow-100 p-6 flex flex-col items-center">
       <h1 className="text-2xl font-bold text-green-800 mb-4">Order Review</h1>

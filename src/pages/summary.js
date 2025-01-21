@@ -43,7 +43,7 @@ const Summary = () => {
         setTimeout(() => {
           localStorage.removeItem("orders");
           navigate("/order-review", {
-            state: { cartItems, total: calculateTotal() },
+            state: { cartItems, total: calculateTotal(), orderId: data.order_id },
           }); // Redirect to the order review page after 5 seconds
         }, 5000);
       })

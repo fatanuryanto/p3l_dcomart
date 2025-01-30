@@ -7,6 +7,7 @@ import Cart from "./pages/cart";
 import Summary from "./pages/summary";
 import OrderReview from "./pages/orderReview";
 import LoginPage from "./pages/loginPage"; // Tambahkan ini
+import InsertItem from "./pages/insertItem";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/cart" element={localStorage.getItem("token") === null ? <Navigate to="/login" /> : <Cart />} />
         <Route path="/summary" element={localStorage.getItem("token") === null ? <Navigate to="/login" /> : <Summary />} />
         <Route path="/order-review" element={localStorage.getItem("token") === null ? <Navigate  to="/login" /> : <OrderReview />} />
+        <Route path="/insert-item" element={localStorage.getItem("token") === null ? <Navigate to="/login" /> : <InsertItem />} />
       </Routes>
       <Footer />
     </BrowserRouter>

@@ -13,8 +13,6 @@ const LoginPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const apiUrl = process.env.REACT_APP_BACKEND_API;
-    console.log(apiUrl);
-    
     try {
       const response = await fetch(`${apiUrl}/user/login`, {
         method: 'POST',
@@ -27,7 +25,7 @@ const LoginPage = () => {
       if (response.ok) {
         const data = await response.json();
         localStorage.setItem('token', data.token);
-         navigate('/');
+         navigate("/");
       } else {
         console.error('Login failed:', response.statusText);
       }

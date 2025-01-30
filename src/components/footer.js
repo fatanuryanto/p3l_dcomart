@@ -13,7 +13,7 @@ function Footer() {
             <ul className="text-blue-950 dark:text-blue-950 font-medium text-center sm:text-left">
               <li className="mb-4">
                 <a
-                  href="/OurStory"
+                  href="/HowToBuy"
                   className="text-blue-950 dark:text-blue-950 font-medium"
                 >
                   How To Buy
@@ -21,7 +21,7 @@ function Footer() {
               </li>
               <li className="mb-4">
                 <a
-                  href="/ProductCategory"
+                  href="/PaymentInformation"
                   className="text-blue-950 dark:text-blue-950 font-medium"
                 >
                   Payment Information
@@ -29,7 +29,7 @@ function Footer() {
               </li>
               <li className="mb-4">
                 <a
-                  href="/ProductCategory"
+                  href="/shipping-information"
                   className="text-blue-950 dark:text-blue-950 font-medium"
                 >
                   Shipping Information
@@ -37,7 +37,7 @@ function Footer() {
               </li>
               <li>
                 <a
-                  href="/PrivacyPolicy"
+                  href="/ContactUs"
                   className="text-blue-950 dark:text-blue-950 font-medium"
                 >
                   Contact Us

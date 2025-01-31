@@ -25,11 +25,11 @@ function App() {
         <Route path="/cart" element={localStorage.getItem("token") === null ? <Navigate to="/login" /> : <Cart />} />
         <Route path="/summary" element={localStorage.getItem("token") === null ? <Navigate to="/login" /> : <Summary />} />
         <Route path="/order-review" element={localStorage.getItem("token") === null ? <Navigate  to="/login" /> : <OrderReview />} />
-        <Route path="/insert" element={<InsertPage />} />
-        <Route path="/shipping-information" element={<ShippingMethods />} />
-        <Route path="/PaymentInformation" element={<PaymentInfo />} />
-        <Route path="/HowToBuy" element={<CaraBeli />} />
-        <Route path="/ContactUs" element={<Contact />} />
+        <Route path="/insert" element={localStorage.getItem("token") === null ? <Navigate to="/login" /> : <InsertPage />} />
+        <Route path="/shipping-information" element={localStorage.getItem("token") === null ? <Navigate to="/login" /> : <ShippingMethods />} />
+        <Route path="/PaymentInformation" element={localStorage.getItem("token") === null ? <Navigate to="/login" /> : <PaymentInfo />} />
+        <Route path="/HowToBuy" element={localStorage.getItem("token") === null ? <Navigate to="/login" /> : <CaraBeli />} />
+        <Route path="/ContactUs" element={localStorage.getItem("token") === null ? <Navigate to="/login" /> : <Contact />} />
         
       </Routes>
       <Footer />

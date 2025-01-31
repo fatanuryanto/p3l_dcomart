@@ -30,7 +30,7 @@ function App() {
         <Route path="/PaymentInformation" element={localStorage.getItem("token") === null ? <Navigate to="/login" /> : <PaymentInfo />} />
         <Route path="/HowToBuy" element={localStorage.getItem("token") === null ? <Navigate to="/login" /> : <CaraBeli />} />
         <Route path="/ContactUs" element={localStorage.getItem("token") === null ? <Navigate to="/login" /> : <Contact />} />
-        
+        <Route path="/AnekaNasi" element={localStorage.getItem("token") === null ? <Navigate to="/login" /> : <AnekaNasi />} />
       </Routes>
       <Footer />
     </BrowserRouter>

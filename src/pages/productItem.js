@@ -1,7 +1,34 @@
-import React from 'react';
+import React, { useState, useEffect } from "react";
 
-const ProductItem = ({ id, name, price, desc, onToggle, isInCart }) => {
+const ProductItem = ({ id, name, price, desc, imageID, onToggle, isInCart }) => {
   const buttonText = isInCart ? "- Hapus dari keranjang" : "+ Tambah ke keranjang";
+  const [imageSrc, setImageSrc] = useState("");
+
+  useEffect(() => {
+    const fetchImage = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const response = await fetch(`http://localhost:8080/item/image/${imageID}`, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch image");
+        }
+
+        const blob = await response.blob();
+        const objectURL = URL.createObjectURL(blob);
+        setImageSrc(objectURL);
+      } catch (error) {
+        console.error("Error fetching image:", error);
+      }
+    };
+
+    fetchImage();
+  }, [imageID]);
 
   return (
     <div className="card bg-base-100 w-96 shadow-xl">
@@ -11,10 +38,7 @@ const ProductItem = ({ id, name, price, desc, onToggle, isInCart }) => {
         <p>Rp {price}</p>
       </div>
       <figure>
-        <img
-          src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
-          alt={name}
-        />
+        {imageSrc ? <img src={imageSrc} alt={name} /> : <p>Loading image...</p>}
       </figure>
       <div className="card-actions justify-center">
         <div className="btn-group">

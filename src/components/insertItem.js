@@ -6,13 +6,19 @@ const InsertItem = () => {
   const [description, setDescription] = useState("");
   const [photo, setPhoto] = useState(null);
   const [category, setCategory] = useState("");
-  const [categories, setCategories] = useState(["Elektronik", "Pakaian", "Makanan"]);
+  const [categories, setCategories] = useState([
+    "Elektronik",
+    "Pakaian",
+    "Makanan",
+  ]);
   const [newCategory, setNewCategory] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false); // State untuk modal
 
   const handleAddCategory = () => {
     if (newCategory.trim() && !categories.includes(newCategory)) {
       setCategories([...categories, newCategory]);
       setNewCategory("");
+      setIsModalOpen(false); // Tutup modal setelah kategori ditambahkan
     }
   };
 
@@ -46,7 +52,9 @@ const InsertItem = () => {
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Nama Barang */}
           <div>
-            <label className="block text-sm font-medium mb-1">Nama Barang</label>
+            <label className="block text-sm font-medium mb-1">
+              Nama Barang
+            </label>
             <input
               type="text"
               value={name}
@@ -85,7 +93,9 @@ const InsertItem = () => {
 
           {/* Foto */}
           <div>
-            <label className="block text-sm font-medium mb-1">Foto Barang</label>
+            <label className="block text-sm font-medium mb-1">
+              Foto Barang
+            </label>
             <input
               type="file"
               accept="image/*"
@@ -95,7 +105,7 @@ const InsertItem = () => {
             />
           </div>
 
-          {/* Kategori */}
+          {/* Bagian Kategori */}
           <div>
             <label className="block text-sm font-medium mb-1">Kategori</label>
             <select
@@ -104,7 +114,9 @@ const InsertItem = () => {
               className="select select-bordered w-full"
               required
             >
-              <option value="" disabled>Pilih kategori</option>
+              <option value="" disabled>
+                Pilih kategori
+              </option>
               {categories.map((cat, index) => (
                 <option key={index} value={cat}>
                   {cat}
@@ -113,30 +125,93 @@ const InsertItem = () => {
             </select>
           </div>
 
-          {/* Tambah Kategori Baru */}
+          {/* Tombol Tambah Kategori Baru */}
           <div>
-            <label className="block text-sm font-medium mb-1">Tambah Kategori Baru</label>
+            <label className="block text-sm font-medium mb-1">
+              Tambah Kategori Baru
+            </label>
             <div className="flex items-center space-x-2">
-              <input
-                type="text"
-                value={newCategory}
-                onChange={(e) => setNewCategory(e.target.value)}
-                placeholder="Masukkan kategori baru"
-                className="input input-bordered w-full"
-              />
-              {/* Tombol Tambah menjadi kuning */}
               <button
                 type="button"
-                onClick={handleAddCategory}
+                onClick={() => setIsModalOpen(true)} // Buka modal
                 className="bg-yellow-500 hover:bg-yellow-600 text-white btn btn-secondary"
               >
-                Tambah
+                Tambah Kategori Baru
               </button>
             </div>
           </div>
 
+          {/* Modal untuk Tambah Kategori Baru */}
+          {isModalOpen && (
+            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+              <div className="bg-white rounded-lg shadow-lg p-6 w-96">
+                <div className="flex justify-between items-center mb-4">
+                  <h2 className="text-lg font-semibold">
+                    Tambah Kategori Baru
+                  </h2>
+                  <button
+                    onClick={() => setIsModalOpen(false)} // Tutup modal
+                    className="text-gray-500 hover:text-gray-800"
+                  >
+                    ✕
+                  </button>
+                </div>
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    handleAddCategory();
+                  }}
+                >
+                  <div className="mb-4">
+                    <div>
+                      <label className="block text-sm font-medium mb-1">
+                        Foto Kategori
+                      </label>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) => setPhoto(e.target.files[0])}
+                        className="file-input file-input-bordered w-full"
+                        required
+                      />
+                    </div>
+                    <label className="block text-sm font-medium mb-1">
+                      Nama Kategori Baru
+                    </label>
+                    <input
+                      type="text"
+                      value={newCategory}
+                      onChange={(e) => setNewCategory(e.target.value)}
+                      placeholder="Masukkan kategori baru"
+                      className="input input-bordered w-full"
+                      required
+                    />
+                  </div>
+                  <div className="flex justify-end space-x-2">
+                    <button
+                      type="button"
+                      onClick={() => setIsModalOpen(false)} // Tutup modal
+                      className="btn btn-secondary bg-red-600 hover:bg-red-700 text-white"
+                    >
+                      Batal
+                    </button>
+                    <button
+                      type="submit"
+                      className="btn btn-primary bg-yellow-500 hover:bg-gray-900 text-white"
+                    >
+                      Tambahkan
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          )}
+
           {/* Submit Button */}
-          <button type="submit" className="btn btn-primary w-full bg-yellow-500 hover:bg-yellow-600 text-white">
+          <button
+            type="submit"
+            className="btn btn-primary w-full bg-yellow-500 hover:bg-yellow-600 text-white"
+          >
             Simpan Barang
           </button>
         </form>

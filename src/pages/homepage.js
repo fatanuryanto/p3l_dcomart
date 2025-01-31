@@ -1,16 +1,8 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import WelcomeImage from "../assets/Welcome.png";
-import Nasgor from "../assets/nasi-goreng.png";
-import Minyak from "../assets/minyak.png";
-import Minuman from "../assets/Minuman.png";
-import Roti from "../assets/Roti.png";
-import Listrik from "../assets/Peralatan Listrik.png";
-import Perlengkapan from "../assets/PerlengkapanRT.png";
-import Snack from "../assets/snack.png";
-import Lainnya from "../assets/Lainnya.png";
-import Buah from "../assets/Buah.png";
-import Perawatan from "../assets/Perawatan.png";
 import { Link } from "react-router-dom";
+import CategoryButton from "../components/CategoryButton";
+import LiveChat from "../components/LiveChat";
 
 const products = [
   {
@@ -48,6 +40,18 @@ const products = [
 ];
 
 const Homepage = () => {
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    fetch(`${process.env.REACT_APP_BACKEND_API}/category`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => setCategories(data));
+  }, []);
   return (
     <div className="bg-gray-50 min-h-screen p-4">
       <div className="max-w-screen-lg mx-auto bg-white rounded-lg shadow-md">
@@ -98,46 +102,18 @@ const Homepage = () => {
             Hari ini mau belanja apa?
           </h3>
           <div className="bg-white rounded-lg shadow-md p-4 grid grid-cols-2 md:grid-cols-5 gap-4">
-            <button className="btn btn-outline btn-sm flex flex-col items-center justify-center h-32 overflow-hidden border border-gray-300 rounded-lg font-bold text-blue-950">
-              <img src={Nasgor} alt="UMKM" className="w-16 h-16 mb-2" />
-              Produk UMKM
-            </button>
-            <button className="btn btn-outline btn-sm flex flex-col items-center justify-center h-32 overflow-hidden border border-gray-300 rounded-lg font-bold text-blue-950">
-              <img src={Minyak} alt="Minyak" className="w-16 h-16 mb-2" />
-              Bahan Pokok & Dapur
-            </button>
-            <button className="btn btn-outline btn-sm flex flex-col items-center justify-center h-32 overflow-hidden border border-gray-300 rounded-lg font-bold text-blue-950">
-              <img src={Minuman} alt="Minuman" className="w-16 h-16 mb-2" />
-              Minuman & Es Krim
-            </button>
-            <button className="btn btn-outline btn-sm flex flex-col items-center justify-center h-32 overflow-hidden border border-gray-300 rounded-lg font-bold text-blue-950">
-              <img src={Snack} alt="Snack" className="w-16 h-16 mb-2" />
-              Camilan
-            </button>
-            <button className="btn btn-outline btn-sm flex flex-col items-center justify-center h-32 overflow-hidden border border-gray-300 rounded-lg font-bold text-blue-950">
-              <img src={Roti} alt="Roti" className="w-16 h-16 mb-2" />
-              Roti
-            </button>
-            <button className="btn btn-outline btn-sm flex flex-col items-center justify-center h-32 overflow-hidden border border-gray-300 rounded-lg font-bold text-blue-950">
-              <img src={Buah} alt="Buah" className="w-16 h-16 mb-2" />
-              Buah
-            </button>
-            <button className="btn btn-outline btn-sm flex flex-col items-center justify-center h-32 overflow-hidden border border-gray-300 rounded-lg font-bold text-blue-950">
-              <img src={Perawatan} alt="Skincare" className="w-16 h-16 mb-2" />
-              Perawatan
-            </button>
-            <button className="btn btn-outline btn-sm flex flex-col items-center justify-center h-32 overflow-hidden border border-gray-300 rounded-lg font-bold text-blue-950">
-              <img src={Perlengkapan} alt="RT" className="w-16 h-16 mb-2" />
-              Perlengkapan Rumah Tangga
-            </button>
-            <button className="btn btn-outline btn-sm flex flex-col items-center justify-center h-32 overflow-hidden border border-gray-300 rounded-lg font-bold text-blue-950">
-              <img src={Listrik} alt="Listrik" className="w-16 h-16 mb-2" />
-              Peralatan Listrik
-            </button>
-            <button className="btn btn-outline btn-sm flex flex-col items-center justify-center h-32 overflow-hidden border border-gray-300 rounded-lg font-bold text-blue-950">
-              <img src={Lainnya} alt="Others" className="w-16 h-16 mb-2" />
-              Lainnya
-            </button>
+            {categories.length > 0 ? (
+              categories.map((category) => (
+                <CategoryButton id={category.ID} name={category.Name} />
+              ))
+            ) : (
+              <p className="text-center text-gray-500">
+                No categories available
+              </p>
+            )}
+          </div>
+          <div>
+            <LiveChat />
           </div>
 
           <div className="p-6 bg-gray-100 min-h-screen">

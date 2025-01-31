@@ -13,7 +13,6 @@ import InsertPage from "./components/insertItem";
 import ShippingMethods from "./components/metodePengiriman";
 import PaymentInfo from "./components/pembayaranInfo";
 import AnekaNasi from "./pages/anekanasi";
-import Deskripsi from "./pages/deskripsi";
 
 function App() {
   return (

@@ -23,7 +23,7 @@ function Navbar() {
         </Link>
       </div>
 
-      <div className="flex-none gap-2">
+      {/* <div className="flex-none gap-2">
         <div className="form-control">
           <input
             type="text"
@@ -31,18 +31,19 @@ function Navbar() {
             className="input input-bordered w-24 sm:w-32 md:w-48 lg:w-auto"
           />
         </div>
-      </div>
+      </div> */}
 
       {/* Cart Icon and Add Product Button */}
       <div className="navbar-end flex items-center gap-4">
         {/* Add Product Button */}
-        <Link
-          to="/insert"
-          className="btn btn-dark text-slate-100 bg-gray-800 hover:bg-gray-900 border-none"
-        >
-          Tambah Produk
-        </Link>
-
+        {JSON.parse(localStorage.getItem("user")).role === "admin" && (
+          <Link
+            to="/insert"
+            className="btn btn-dark text-slate-100 bg-gray-800 hover:bg-gray-900 border-none"
+          >
+            Tambah Produk
+          </Link>
+        )}
         {/* Cart Icon */}
         <div className="dropdown dropdown-end">
           <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
@@ -72,14 +73,20 @@ function Navbar() {
           >
             <div className="card-body">
               <span className="text-lg font-bold">{orders.length} Items</span>
+              <ul className="list-disc pl-4">
+                {orders.map((order) => (
+                  <li key={order.id}>
+                    {order.name} x {order.quantity} - Rp{" "}
+                    {(order.price * order.quantity).toLocaleString()}
+                  </li>
+                ))}
+              </ul>
               <span className="text-info">
                 Subtotal: Rp
-                {orders
-                  .reduce((total, order) => total + order.price, 0)
-                  .toLocaleString()}
+                {JSON.parse(localStorage.getItem("subtotal") || 0).toLocaleString()}
               </span>
               <div className="card-actions">
-                <Link to="/cart" className="btn btn-primary btn-block">
+                <Link to="/summary" className="btn btn-primary btn-block">
                   View cart
                 </Link>
               </div>

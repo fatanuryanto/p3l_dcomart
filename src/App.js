@@ -1,5 +1,5 @@
 import "./App.css";
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import Footer from "./components/footer";
 import Navbar from "./components/navbar";
 import Homepage from "./pages/homepage";
@@ -13,23 +13,100 @@ import InsertPage from "./components/insertItem";
 import ShippingMethods from "./components/metodePengiriman";
 import PaymentInfo from "./components/pembayaranInfo";
 import AnekaNasi from "./pages/anekanasi";
+import PrivateRoute from "./components/PrivateRoute";
 
 function App() {
   return (
     <BrowserRouter>
       <Navbar />
       <Routes>
-      <Route path="/login" element={<LoginPage />} />
-        <Route path="/" element={localStorage.getItem("token") === null ? <Navigate to="/login" /> : <Homepage />} />
-        <Route path="/cart" element={localStorage.getItem("token") === null ? <Navigate to="/login" /> : <Cart />} />
-        <Route path="/summary" element={localStorage.getItem("token") === null ? <Navigate to="/login" /> : <Summary />} />
-        <Route path="/order-review" element={localStorage.getItem("token") === null ? <Navigate  to="/login" /> : <OrderReview />} />
-        <Route path="/insert" element={localStorage.getItem("token") === null ? <Navigate to="/login" /> : <InsertPage />} />
-        <Route path="/shipping-information" element={localStorage.getItem("token") === null ? <Navigate to="/login" /> : <ShippingMethods />} />
-        <Route path="/PaymentInformation" element={localStorage.getItem("token") === null ? <Navigate to="/login" /> : <PaymentInfo />} />
-        <Route path="/HowToBuy" element={localStorage.getItem("token") === null ? <Navigate to="/login" /> : <CaraBeli />} />
-        <Route path="/ContactUs" element={localStorage.getItem("token") === null ? <Navigate to="/login" /> : <Contact />} />
-        <Route path="/AnekaNasi" element={localStorage.getItem("token") === null ? <Navigate to="/login" /> : <AnekaNasi />} />
+        {/* Public Route */}
+        <Route path="/login" element={<LoginPage />} />
+
+        {/* Protected Routes */}
+        <Route
+          path="/"
+          element={
+            <PrivateRoute>
+              <Homepage />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/cart"
+          element={
+            <PrivateRoute>
+              <Cart />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/summary"
+          element={
+            <PrivateRoute>
+              <Summary />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/order-review"
+          element={
+            <PrivateRoute>
+              <OrderReview />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/insert"
+          element={
+            <PrivateRoute>
+              <InsertPage />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/shipping-information"
+          element={
+            <PrivateRoute>
+              <ShippingMethods />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/PaymentInformation"
+          element={
+            <PrivateRoute>
+              <PaymentInfo />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/HowToBuy"
+          element={
+            <PrivateRoute>
+              <CaraBeli />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/ContactUs"
+          element={
+            <PrivateRoute>
+              <Contact />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/AnekaNasi"
+          element={
+            <PrivateRoute>
+              <AnekaNasi />
+            </PrivateRoute>
+          }
+        />
+
+        {/* Redirect unknown routes */}
+        <Route path="*" element={<Navigate to="/" />} />
       </Routes>
       <Footer />
     </BrowserRouter>

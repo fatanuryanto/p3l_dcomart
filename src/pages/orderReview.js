@@ -13,7 +13,7 @@ const OrderReview = () => {
   }, [location.state, navigate]);
 
   // Destructure state safely
-  const { cartItems = [], total = 0, orderId = "" } = location.state || {};
+  const { cartItems = [], total = 0} = location.state || {};
   return (
     <div className="min-h-screen bg-gradient-to-b from-green-100 to-yellow-100 p-6 flex flex-col items-center">
       <h1 className="text-2xl font-bold text-green-800 mb-4">Order Review</h1>

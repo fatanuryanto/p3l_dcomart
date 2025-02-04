@@ -36,16 +36,14 @@ function Navbar() {
       {/* Cart Icon and Add Product Button */}
       <div className="navbar-end flex items-center gap-4">
         {/* Add Product Button */}
-        {JSON.parse(localStorage.getItem("user")).role === "admin" ? (
+        {JSON.parse(localStorage.getItem("user"))?.role === "admin" ? (
           <Link
             to="/insert"
             className="btn btn-dark text-slate-100 bg-gray-800 hover:bg-gray-900 border-none"
           >
             Tambah Produk
           </Link>
-        ) : (
-          ""
-        )}
+        ) : null}
         {/* Cart Icon */}
         <div className="dropdown dropdown-end">
           <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
@@ -85,7 +83,9 @@ function Navbar() {
               </ul>
               <span className="text-info">
                 Subtotal: Rp
-                {JSON.parse(localStorage.getItem("subtotal") || 0).toLocaleString()}
+                {JSON.parse(
+                  localStorage.getItem("subtotal") || 0
+                ).toLocaleString()}
               </span>
               <div className="card-actions">
                 <Link to="/summary" className="btn btn-primary btn-block">
